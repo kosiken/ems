@@ -1,5 +1,4 @@
 package controllers;
-
 import com.encentral.ems.api.IAdmin;
 import com.encentral.ems.models.Admin;
 import com.encentral.ems.models.Attendance;
@@ -16,6 +15,8 @@ import play.mvc.Result;
 import javax.inject.Inject;
 import java.util.Optional;
 
+
+@Api(value = "/admin")
 @Transactional
 public class AdminController extends Controller {
 
@@ -39,7 +40,7 @@ public class AdminController extends Controller {
                     value = "Admin name",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             ),
 
             @ApiImplicitParam(
@@ -47,7 +48,7 @@ public class AdminController extends Controller {
                     value = "Admin email",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             ),
 
             @ApiImplicitParam(
@@ -55,7 +56,7 @@ public class AdminController extends Controller {
                     value = "Admin password",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             )
     })
     public Result addAdmin() throws Exception {
@@ -93,7 +94,7 @@ public class AdminController extends Controller {
                     value = "Admin email",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             ),
 
             @ApiImplicitParam(
@@ -101,7 +102,7 @@ public class AdminController extends Controller {
                     value = "Admin password",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             )
     })
 
@@ -138,21 +139,21 @@ public class AdminController extends Controller {
                     value = "Employee first name",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             ),
             @ApiImplicitParam(
                     name = "lastName",
                     value = "Employee last name",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             ),
             @ApiImplicitParam(
                     name = "email",
                     value = "Employee email",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             )
 
     })
@@ -189,7 +190,7 @@ public class AdminController extends Controller {
             @ApiResponse(code = 200, message = "All the attendance of Employee with id",
                     response = Attendance.class, responseContainer = "List")
     })
-    public Result getEmployeeAttendance(@ApiParam(value = "token of the admin", name = "token")String token, @ApiParam(value = "id of employee", name = "id", type = "java.lang.String")String id) throws Exception {
+    public Result getEmployeeAttendance(@ApiParam(value = "token of the admin", name = "token")String token, @ApiParam(value = "id of employee", name = "id", type = "string")String id) throws Exception {
         return ok(objectMapper.writeValueAsString(iAdmin.getEmployeeAttendance(token, id)));
     }
 
@@ -211,7 +212,7 @@ public class AdminController extends Controller {
                     response = Employee.class),
             @ApiResponse(code = 400, message = "Not find employee with id")
     })
-    public Result deleteEmployee(@ApiParam(value = "token of the admin", name = "token") String token, @ApiParam(value = "id of the employee", name = "id", type = "java.lang.String") String id) throws Exception {
+    public Result deleteEmployee(@ApiParam(value = "token of the admin", name = "token") String token, @ApiParam(value = "id of the employee", name = "id", type = "string") String id) throws Exception {
         Optional<Employee> optionalEmployee = iAdmin.deleteEmployee(id, token);
         if(optionalEmployee.isEmpty()) {
             return badRequest("No Employee with id " + id + " found");
@@ -234,7 +235,7 @@ public class AdminController extends Controller {
                     value = "The new password",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             ),
 
             @ApiImplicitParam(
@@ -242,7 +243,7 @@ public class AdminController extends Controller {
                     value = "The old password",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             )
 
     })

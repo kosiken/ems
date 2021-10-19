@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import java.util.Date;
 import java.util.Optional;
 
+@Api(value = "/employee")
 @Transactional
 public class EmployeeController extends Controller {
 
@@ -40,7 +41,7 @@ public class EmployeeController extends Controller {
                     value = "Employee email",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             ),
 
             @ApiImplicitParam(
@@ -48,7 +49,7 @@ public class EmployeeController extends Controller {
                     value = "Employee  password",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             )
     })
 
@@ -84,7 +85,7 @@ public class EmployeeController extends Controller {
                     value = "The new password",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             ),
 
             @ApiImplicitParam(
@@ -92,11 +93,11 @@ public class EmployeeController extends Controller {
                     value = "The old password",
                     paramType = "string",
                     required = true,
-                    dataType = "java.lang.String"
+                    dataType = "string"
             )
 
     })
-    public Result updatePassword(@ApiParam(name="token", value = "user token", type = "java.lang.String") String token)  throws JsonProcessingException, Exception {
+    public Result updatePassword(@ApiParam(name="token", value = "user token", type = "string") String token)  throws JsonProcessingException, Exception {
 
         Form<PasswordForm> libraryForm = formFactory.form(PasswordForm.class).bindFromRequest();
 
@@ -114,7 +115,7 @@ public class EmployeeController extends Controller {
     }
 
     @ApiOperation(value = "Mark Attendance", httpMethod = "POST")
-    public Result markAttendance(@ApiParam(value = "user token", name = "token", type = "java.lang.String") String token) throws Exception {
+    public Result markAttendance(@ApiParam(value = "user token", name = "token", type = "string") String token) throws Exception {
 
         Date date = new Date();
 
