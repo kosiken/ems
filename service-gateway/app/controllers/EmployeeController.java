@@ -122,7 +122,7 @@ public class EmployeeController extends Controller {
 
             return ok(objectMapper.writeValueAsString(employee));
         }
-        catch (NullPointerException nullPointerException) {
+        catch (NullPointerException | IllegalArgumentException nullPointerException) {
             ApiErrorReporter errorReporter = new ApiErrorReporter();
             errorReporter.reason = nullPointerException.getMessage();
             return badRequest(objectMapper.writeValueAsString(errorReporter));
