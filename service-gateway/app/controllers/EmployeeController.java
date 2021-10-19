@@ -1,13 +1,11 @@
 package controllers;
 
 import com.encentral.ems.api.IEmployee;
-import com.encentral.ems.models.Admin;
-import com.encentral.ems.models.Attendance;
-import com.encentral.ems.models.Employee;
-import com.encentral.ems.models.PasswordForm;
+import com.encentral.ems.models.*;
 import com.encentral.scaffold.commons.util.MyObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.*;
+//import io.swagger.annotations.
 import play.data.Form;
 import play.data.FormFactory;
 import play.db.jpa.Transactional;
@@ -33,13 +31,15 @@ public class EmployeeController extends Controller {
     @ApiOperation(value = "Login an employee", httpMethod = "POST")
     @ApiResponses(
             value = {
-                    @ApiResponse(code = 200, response = Employee.class, message = "Logged in employee")}
+                    @ApiResponse(code = 200, response = Employee.class, message = "Logged in employee"),
+                    @ApiResponse(code=400, response = ApiErrorReporter.class, message = "No user found with email"),
+                    @ApiResponse(code = 500, response = ApiErrorReporter.class, message = "Unexpected Error")}
     )
     @ApiImplicitParams({
             @ApiImplicitParam(
                     name = "email",
                     value = "Employee email",
-                    paramType = "string",
+                    paramType = "body",
                     required = true,
                     dataType = "string"
             ),
@@ -47,7 +47,7 @@ public class EmployeeController extends Controller {
             @ApiImplicitParam(
                     name = "password",
                     value = "Employee  password",
-                    paramType = "string",
+                    paramType = "body",
                     required = true,
                     dataType = "string"
             )
@@ -60,13 +60,20 @@ public class EmployeeController extends Controller {
         if (libraryForm.hasErrors()) {
             return badRequest(libraryForm.errorsAsJson());
         }
-        Employee employee = null;
-        Optional<Employee> optionalEmployee = iEmployee.login(libraryForm.get());
-        if(optionalEmployee.isPresent() ) employee = optionalEmployee.get();
-        if(employee == null) {
-            return badRequest("Email " + libraryForm.get().getEmail() + " is already taken");
+        try {
+            Employee employee = null;
+            Optional<Employee> optionalEmployee = iEmployee.login(libraryForm.get());
+            if (optionalEmployee.isPresent()) employee = optionalEmployee.get();
+            if (employee == null) {
+                return badRequest("Email " + libraryForm.get().getEmail() + " is already taken");
+            }
+            return ok(objectMapper.writeValueAsString(employee));
         }
-        return ok(objectMapper.writeValueAsString(employee));
+        catch (NullPointerException nullPointerException) {
+            ApiErrorReporter errorReporter = new ApiErrorReporter();
+            errorReporter.reason = nullPointerException.getMessage();
+            return badRequest(objectMapper.writeValueAsString(errorReporter));
+        }
 
 //          return  ok(libraryForm.get().toString());
 
@@ -76,14 +83,16 @@ public class EmployeeController extends Controller {
     @ApiOperation(value = "Update password", httpMethod = "POST")
     @ApiResponses(
             value = {
-                    @ApiResponse(code = 200, response = Admin.class, message = "Newly updated Admin")}
+                    @ApiResponse(code = 200, response = Employee.class, message = "Newly updated employee"),
+                    @ApiResponse(code = 400, response = ApiErrorReporter.class, message = "No user found with token"),
+                    @ApiResponse(code = 500, response = ApiErrorReporter.class, message = "Unexpected Error")}
     )
     @ApiImplicitParams({
 
             @ApiImplicitParam(
                     name = "password",
                     value = "The new password",
-                    paramType = "string",
+                    paramType = "body",
                     required = true,
                     dataType = "string"
             ),
@@ -91,7 +100,7 @@ public class EmployeeController extends Controller {
             @ApiImplicitParam(
                     name = "oldPassword",
                     value = "The old password",
-                    paramType = "string",
+                    paramType = "body",
                     required = true,
                     dataType = "string"
             )
@@ -104,37 +113,63 @@ public class EmployeeController extends Controller {
         if (libraryForm.hasErrors()) {
             return badRequest(libraryForm.errorsAsJson());
         }
-        Employee employee = null;
-        Optional<Employee> optionalEmployee = iEmployee.updatePassword(token, libraryForm.get());
-        if(optionalEmployee.isPresent() ) employee = optionalEmployee.get();
+        try {
 
-        return ok(objectMapper.writeValueAsString(employee));
 
+            Employee employee = null;
+            Optional<Employee> optionalEmployee = iEmployee.updatePassword(token, libraryForm.get());
+            if (optionalEmployee.isPresent()) employee = optionalEmployee.get();
+
+            return ok(objectMapper.writeValueAsString(employee));
+        }
+        catch (NullPointerException nullPointerException) {
+            ApiErrorReporter errorReporter = new ApiErrorReporter();
+            errorReporter.reason = nullPointerException.getMessage();
+            return badRequest(objectMapper.writeValueAsString(errorReporter));
+        }
 //          return  ok(libraryForm.get().toString());
 
     }
 
     @ApiOperation(value = "Mark Attendance", httpMethod = "POST")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 200, response = Attendance.class, message = "New marked attendance"),
+                    @ApiResponse(code = 400, response = ApiErrorReporter.class, message = "No user found with token"),
+                    @ApiResponse(code = 500, response = ApiErrorReporter.class, message = "Unexpected Error")
+            }
+    )
     public Result markAttendance(@ApiParam(value = "user token", name = "token", type = "string") String token) throws Exception {
 
         Date date = new Date();
 
         int day = date.getDay();
 
-        if(day >= 1 && day <= 5) {
-            int time = date.getHours();
-            if(time >= 9 && time <= 17 ) {
-                Optional<Attendance> optionalAttendance =  iEmployee.markAttendance(token, date);
-                if(optionalAttendance.isPresent()) {
-                    return ok(objectMapper.writeValueAsString(optionalAttendance.get()));
-                }
-            }
 
+        try {
+            if (day >= 1 && day <= 5) {
+                int time = date.getHours();
+                if (time >= 9 && time <= 17) {
+                    Optional<Attendance> optionalAttendance = iEmployee.markAttendance(token, date);
+                    if (optionalAttendance.isPresent()) {
+                        return ok(objectMapper.writeValueAsString(optionalAttendance.get()));
+                    }
+                }
+
+            }
+            ApiErrorReporter errorReporter = new ApiErrorReporter();
+            errorReporter.reason = "Time " + date + " is not within timeframe 9a.m - 5p.m Mon - Fri";
+            return badRequest(objectMapper.writeValueAsString(errorReporter));
+
+        }
+        catch (NullPointerException nullPointerException) {
+            ApiErrorReporter errorReporter = new ApiErrorReporter();
+            errorReporter.reason = nullPointerException.getMessage();
+            return badRequest(objectMapper.writeValueAsString(errorReporter));
         }
 
 
-        return badRequest("Time " + date + " is not within timeframe 9a.m - 5p.m Mon - Fri");
-    }
+     }
 
 
 

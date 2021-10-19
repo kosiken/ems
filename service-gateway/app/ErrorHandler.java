@@ -4,6 +4,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import com.encentral.ems.models.ApiErrorReporter;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
@@ -83,7 +84,10 @@ public class ErrorHandler extends DefaultHttpErrorHandler {
                 || thrwbl instanceof IllegalArgumentException
                 || thrwbl instanceof IOException
                 || thrwbl instanceof JsonMappingException) {
-            return onBadRequest(rh, Objects.toString(thrwbl.getMessage(), "oops"));
+            ApiErrorReporter errorReporter = new ApiErrorReporter();
+            errorReporter.reason = thrwbl.getMessage();
+            errorReporter.code = 500;
+            return onBadRequest(rh, Objects.toString(errorReporter, "oops"));
         }
 //        final var id = randomUUID().toString();
 //        play.Logger.error("Server failed id {} ", id, thrwbl);
