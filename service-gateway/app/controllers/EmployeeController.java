@@ -39,7 +39,7 @@ public class EmployeeController extends Controller {
             @ApiImplicitParam(
                     name = "email",
                     value = "Employee email",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             ),
@@ -47,7 +47,7 @@ public class EmployeeController extends Controller {
             @ApiImplicitParam(
                     name = "password",
                     value = "Employee  password",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             )
@@ -92,7 +92,7 @@ public class EmployeeController extends Controller {
             @ApiImplicitParam(
                     name = "password",
                     value = "The new password",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             ),
@@ -100,7 +100,7 @@ public class EmployeeController extends Controller {
             @ApiImplicitParam(
                     name = "oldPassword",
                     value = "The old password",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             )

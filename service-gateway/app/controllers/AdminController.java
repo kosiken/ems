@@ -37,7 +37,7 @@ public class AdminController extends Controller {
             @ApiImplicitParam(
                     name = "name",
                     value = "Admin name",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             ),
@@ -45,7 +45,7 @@ public class AdminController extends Controller {
             @ApiImplicitParam(
                     name = "email",
                     value = "Admin email",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             ),
@@ -53,7 +53,7 @@ public class AdminController extends Controller {
             @ApiImplicitParam(
                     name = "password",
                     value = "Admin password",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             )
@@ -97,7 +97,7 @@ public class AdminController extends Controller {
             @ApiImplicitParam(
                     name = "email",
                     value = "Admin email",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             ),
@@ -105,7 +105,7 @@ public class AdminController extends Controller {
             @ApiImplicitParam(
                     name = "password",
                     value = "Admin password",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             )
@@ -153,21 +153,21 @@ public class AdminController extends Controller {
             @ApiImplicitParam(
                     name = "firstName",
                     value = "Employee first name",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             ),
             @ApiImplicitParam(
                     name = "lastName",
                     value = "Employee last name",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             ),
             @ApiImplicitParam(
                     name = "email",
                     value = "Employee email",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             )
@@ -306,7 +306,7 @@ public class AdminController extends Controller {
             @ApiImplicitParam(
                     name = "password",
                     value = "The new password",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             ),
@@ -314,7 +314,7 @@ public class AdminController extends Controller {
             @ApiImplicitParam(
                     name = "oldPassword",
                     value = "The old password",
-                    paramType = "body",
+                    paramType = "form",
                     required = true,
                     dataType = "string"
             )
