@@ -10,6 +10,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ems-api</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.encentral.scaffold</groupId>
+            <artifactId>entities</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

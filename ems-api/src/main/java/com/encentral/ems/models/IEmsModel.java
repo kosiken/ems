@@ -1,5 +1,5 @@
 package com.encentral.ems.models;
 
-public interface EmsModel {
+public interface IEmsModel {
     void setId(String id);
 }

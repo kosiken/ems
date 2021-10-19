@@ -1,0 +1,8 @@
+POST    /                                   controllers.AdminController.addAdmin()
+POST    /login                              controllers.AdminController.login()
+POST    /update-password/:token             controllers.AdminController.updatePassword(token: String)
+POST    /add-employee/:token                controllers.AdminController.addEmployee(token: String)
+GET     /employees/:token                   controllers.AdminController.getEmployees(token: String)
+GET     /delete-employee/:token/:id         controllers.AdminController.deleteEmployee(token: String, id: String)
+GET     /employee-attendance/:token         controllers.AdminController.getEmployeeAttendanceMultiple(token: String)
+GET     /employee-attendance/:token/:id     controllers.AdminController.getEmployeeAttendance(token: String, id: String)

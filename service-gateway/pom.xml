@@ -18,8 +18,8 @@
         <sbt-compiler.plugin.version>1.0.0</sbt-compiler.plugin.version>
         <play2.version>2.6.25</play2.version>
         <swagger.version>1.6.2</swagger.version>
-    </properties>	
-	
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

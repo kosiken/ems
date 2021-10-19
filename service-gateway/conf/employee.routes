@@ -1,0 +1,3 @@
+POST    /login                              controllers.EmployeeController.login()
+POST    /update-password/:token             controllers.EmployeeController.updatePassword(token: String)
+GET     /attendance/:token                  controllers.EmployeeController.markAttendance(token: String)
