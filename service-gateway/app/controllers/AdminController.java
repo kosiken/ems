@@ -131,7 +131,7 @@ public class AdminController extends Controller {
             }
             return ok(objectMapper.writeValueAsString(admin));
         }
-        catch (NullPointerException nullPointerException) {
+        catch (NullPointerException | IllegalArgumentException nullPointerException) {
             ApiErrorReporter errorReporter = new ApiErrorReporter();
             errorReporter.reason = nullPointerException.getMessage();
             return badRequest(objectMapper.writeValueAsString(errorReporter));

@@ -119,8 +119,9 @@ public class DefaultAdminImpl extends AbstractImpl implements IAdmin {
     }
     @Override
     public Optional<Admin> login(Admin admin) throws Exception {
+        Preconditions.checkNotNull(admin.getEmail(), "email is required");
         JPAAdmin jpaAdmin = getAdminEmail(admin.getEmail());
-        Preconditions.checkNotNull(jpaAdmin, "No user with email " + admin.getEmail() + " is taken");
+        Preconditions.checkNotNull(jpaAdmin, "No user with email " + admin.getEmail() + " exists");
 
         if(jpaAdmin == null) return Optional.empty();
         Preconditions.checkArgument(jpaAdmin.getPassword().equals(admin.getPassword()), "Passwords do not match");
